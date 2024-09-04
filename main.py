@@ -22,7 +22,7 @@ class NewsBot(commands.Bot):
         print(f"{self.user} has been added to the guild: {guild.name} ({guild.id})\nInserting new guild into database...")
         result = await Database().get_guild(guild.id)
 
-        if result == []:
+        if not result:
             await Database().insert_guild(guild.name, guild.id)
         else:
             await Database().update_guild({"guild_name": guild.name, "is_active": True}, guild.id)
@@ -31,7 +31,7 @@ class NewsBot(commands.Bot):
         print(f"{self.user} has been removed from the guild: {guild.name} ({guild.id})")
         await Database().update_guild({"guild_name": guild.name, "is_active": False}, guild.id)
 
-    """async def on_command_error(self, ctx, exception: errors.CommandError):
+    async def on_command_error(self, ctx, exception: errors.CommandError):
         if isinstance(exception, commands.PrivateMessageOnly):
             await ctx.reply("This command can only be used in private message.")
         elif isinstance(exception, commands.CommandNotFound):
@@ -39,7 +39,7 @@ class NewsBot(commands.Bot):
         elif isinstance(exception, commands.BotMissingPermissions):
             await ctx.reply("I am missing a required permission to run this command. Please make sure that I have all the required permission.")
         elif isinstance(exception, commands.MissingPermissions):
-            await ctx.reply("You do not have the required permission to run this command.")"""
+            await ctx.reply("You do not have the required permission to run this command.")
 
 
 bot = NewsBot(command_prefix="n!", intents=INTENTS, activity=ACTIVITY)
