@@ -26,7 +26,7 @@ class DeveloperCommands(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def test(self, ctx):
-        article = await News().get_article("us", "health")
+        article = await News().get_article("us", "business", "en")
         await ctx.reply(embed=article)
 
 

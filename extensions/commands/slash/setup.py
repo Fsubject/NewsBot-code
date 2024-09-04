@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 from discord.ext.commands import has_permissions
 from extensions.database import Database
-from settings import COUNTRY_LIST
+from settings import COUNTRY_LIST, LANGUAGE_LIST
 
 
 class SetupCommand(commands.Cog):
@@ -31,18 +31,21 @@ class SetupCommand(commands.Cog):
         app_commands.Choice(name="Tourism", value="tourism"),
         app_commands.Choice(name="World", value="world")
     ])
-    async def setup_command(self, interaction: discord.Interaction, daily_news_channel_id: str, news_country: str, news_category: app_commands.Choice[str]):
+    async def setup_command(self, interaction: discord.Interaction, daily_news_channel_id: str, news_country: str, news_language: str, news_category: app_commands.Choice[str]):
         if self.bot.get_channel(int(daily_news_channel_id)) is not None:
             if self.bot.get_channel(int(daily_news_channel_id)).type == discord.ChannelType.text:
                 if news_country in COUNTRY_LIST:
-                    await interaction.response.defer(thinking=True)
+                    if news_language in LANGUAGE_LIST:
+                        await interaction.response.defer(thinking=True)
 
-                    await Database().update_guild({"news_channel_id": int(daily_news_channel_id), "news_country": news_country, "news_category": news_category.value}, interaction.guild_id)
-                    print(f"{self.bot.user} has been configured on the following server: {interaction.guild.name} ({interaction.guild_id})")
+                        await Database().update_guild({"news_channel_id": int(daily_news_channel_id), "news_country": news_country, "news_category": news_category.value, "news_language": news_language}, interaction.guild_id)
+                        print(f"{self.bot.user} has been configured on the following server: {interaction.guild.name} ({interaction.guild_id})")
 
-                    await interaction.followup.send(f"Your server has been correctly configured!  :tada:\nDaily news will be sent in the channel: ``{daily_news_channel_id}``, the country of the selected news is set to ``{news_country}`` and the category is ``{news_category.value}``", ephemeral=True)
+                        await interaction.followup.send(f"Your server has been correctly configured!  :tada:\nDaily news will be sent in the channel: ``{daily_news_channel_id}``, the country of the selected news is set to ``{news_country}``, the language is ``{news_language}`` and the category is ``{news_category.value}``", ephemeral=True)
+                    else:
+                        await interaction.response.send_message(f"The language you've chose isn't available or does not exist.\nMake sure to chose a language from this list:\n``{LANGUAGE_LIST}``", ephemeral=True)
                 else:
-                    await interaction.response.send_message(f"The language you've chose isn't available or does not exist.\nMake sure to chose a language from this list:\n``{COUNTRY_LIST}``", ephemeral=True)
+                    await interaction.response.send_message(f"The country you've chose isn't available or does not exist.\nMake sure to chose a country from this list:\n``{COUNTRY_LIST}``", ephemeral=True)
             else:
                 await interaction.response.send_message("The channel you've chose isn't a text channel.", ephemeral=True)
         else:

@@ -1,3 +1,5 @@
+# Used database type -> PostgreSQL
+
 from settings import DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_NAME
 import asyncpg
 
@@ -17,11 +19,11 @@ class Database:
 
     # Query management for the news
 
-    async def get_articles(self, country, category):
+    async def get_articles(self, country, category, language):
         await self.connect()
 
         try:
-            result = await self.connection.fetch('SELECT * FROM articles WHERE "article_country" = $1 AND "article_category" = $2;', country, category)
+            result = await self.connection.fetch('SELECT * FROM articles WHERE "article_country" = $1 AND "article_category" = $2 AND "article_language" = $3;', country, category, language)
         finally:
             await self.close()
 
@@ -33,7 +35,7 @@ class Database:
         try:
             async with self.connection.transaction():
                 for article in articles:
-                    await self.connection.execute('INSERT INTO articles("article_country", "article_category", "article_title", "article_description", "article_link", "article_image") VALUES ($1, $2, $3, $4, $5, $6);', article[0], article[1], article[2], article[3], article[4], article[5])
+                    await self.connection.execute('INSERT INTO articles("article_country", "article_category", "article_language", "article_title", "article_description", "article_link", "article_image") VALUES ($1, $2, $3, $4, $5, $6, $7);', article[0], article[1], article[2], article[3], article[4], article[5], article[6])
         finally:
             await self.close()
 

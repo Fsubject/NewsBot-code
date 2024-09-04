@@ -4,9 +4,6 @@ from discord.ext.commands import errors
 from settings import EXTENSIONS, INTENTS, ACTIVITY, DISCORD_API_KEY
 from extensions.database import Database
 
-# I'm getting crazy
-# Fuck NewsBot & Botzilla
-
 
 class NewsBot(commands.Bot):
     async def on_ready(self):
@@ -48,4 +45,4 @@ class NewsBot(commands.Bot):
 bot = NewsBot(command_prefix="n!", intents=INTENTS, activity=ACTIVITY)
 bot.run(DISCORD_API_KEY)
 
-# Fsubject's property
+# Made by Fsubject (fsubject on discord)
