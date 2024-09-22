@@ -1,5 +1,4 @@
 # News api -> newsdata.io
-
 import discord
 from settings import NEWS_API_KEY
 from newsdataapi import NewsDataApiClient
@@ -60,7 +59,7 @@ class News:
 
     async def build_news_embed(self):
         article_embed = discord.Embed(title=self.article["article_title"], description=self.article["article_description"], color=0x0099FF, url=self.article["article_link"])
-        article_embed.set_author(name="NewsBot", icon_url="http://57.128.213.195/images/botzilla_logo.png")
+        article_embed.set_author(name="NewsBot", icon_url="")
         article_embed.set_image(url=self.article["article_image"])
         article_embed.set_footer(text="News obtained from newsdata.io")
 

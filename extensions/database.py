@@ -1,5 +1,4 @@
 # Used database type -> PostgreSQL
-
 from settings import DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_NAME
 import asyncpg
 

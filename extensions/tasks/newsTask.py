@@ -20,7 +20,7 @@ class DailyNews(commands.Cog):
 
     @commands.command(name="time_change")
     @commands.is_owner()
-    async def time_change(self, ctx, hour, minute): # Not really working -> *gotta* be fixed
+    async def time_change(self, ctx, hour, minute): # Not really working -> need to be fixed
         self.daily_news.change_interval(time=datetime.time(hour=int(hour), minute=int(minute), second=0, tzinfo=DAILY_NEWS_TIMEZONE))
         print(f"Daily news task interval has been changed by {ctx.author} at {datetime.datetime.now()}")
         await ctx.reply("You've successfully changed the interval for the next daily news task. Restart the bot to reset it.")
